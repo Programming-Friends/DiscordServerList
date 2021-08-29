@@ -19,36 +19,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System;
+using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DiscordServerList_MVC.Models
 {
-    public class DiscordServer
+    public class DiscordUser : IdentityUser
     {
-        public int Id { get; set; }
-
-        public string DiscordUser { get; set; }
-
         [Required]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
+        [Display(Name = "Display Name")]
+        public string DisplayName { get; set; }
+
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
         [StringLength(75, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
-        public string Name { get; set; }
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
 
-        [Required]
-        [StringLength(75, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
-        public string Description { get; set; }
+        [StringLength(125, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
+        public string GitHubUrl { get; set; }
 
-        [Required]
-        [StringLength(75, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
-        public string InviteLink { get; set; }
+        [StringLength(125, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
+        public string PersonalUrl { get; set; }
 
-        [DataType(DataType.Date)]
-        [Display(Name = "Created Date")]
-        public DateTime Created { get; set; }
-
-        [DataType(DataType.Date)]
-        [Display(Name = "Updated Date")]
-        public DateTime? Updated { get; set; }
+        public virtual ICollection<DiscordServer> DiscordServers { get; set; } = new HashSet<DiscordServer>();
 
         public byte[] ImageData { get; set; }
         public string ContentType { get; set; }
