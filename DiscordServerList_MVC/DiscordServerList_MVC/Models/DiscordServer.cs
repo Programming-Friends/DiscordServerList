@@ -20,6 +20,7 @@ SOFTWARE.
 */
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DiscordServerList_MVC.Models
@@ -28,7 +29,7 @@ namespace DiscordServerList_MVC.Models
     {
         public int Id { get; set; }
 
-        public string DiscordUser { get; set; }
+        public string CreatorId { get; set; }
 
         [Required]
         [StringLength(75, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
@@ -52,5 +53,7 @@ namespace DiscordServerList_MVC.Models
 
         public byte[] ImageData { get; set; }
         public string ContentType { get; set; }
+
+        public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();
     }
 }
