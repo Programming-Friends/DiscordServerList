@@ -4,16 +4,14 @@ using DiscordServerList_MVC.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DiscordServerList_MVC.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210829135925_InitialModels")]
-    partial class InitialModels
+    [DbContext(typeof(IdentityDbContext))]
+    partial class IdentityDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +19,43 @@ namespace DiscordServerList_MVC.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DiscordServerList_MVC.Models.DiscordServer", b =>
+            modelBuilder.Entity("DiscordServerListLib.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
+
+                    b.Property<int?>("DiscordServerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiscordServerId");
+
+                    b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("DiscordServerListLib.Models.DiscordServer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,13 +68,13 @@ namespace DiscordServerList_MVC.Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(75)
                         .HasColumnType("nvarchar(75)");
-
-                    b.Property<string>("DiscordUser")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DiscordUserId")
                         .HasColumnType("nvarchar(450)");
@@ -65,7 +99,7 @@ namespace DiscordServerList_MVC.Data.Migrations
 
                     b.HasIndex("DiscordUserId");
 
-                    b.ToTable("DiscordServers");
+                    b.ToTable("DiscordServer");
                 });
 
             modelBuilder.Entity("DiscordServerList_MVC.Models.DiscordUser", b =>
@@ -291,7 +325,14 @@ namespace DiscordServerList_MVC.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("DiscordServerList_MVC.Models.DiscordServer", b =>
+            modelBuilder.Entity("DiscordServerListLib.Models.Category", b =>
+                {
+                    b.HasOne("DiscordServerListLib.Models.DiscordServer", null)
+                        .WithMany("Categories")
+                        .HasForeignKey("DiscordServerId");
+                });
+
+            modelBuilder.Entity("DiscordServerListLib.Models.DiscordServer", b =>
                 {
                     b.HasOne("DiscordServerList_MVC.Models.DiscordUser", null)
                         .WithMany("DiscordServers")
@@ -347,6 +388,11 @@ namespace DiscordServerList_MVC.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DiscordServerListLib.Models.DiscordServer", b =>
+                {
+                    b.Navigation("Categories");
                 });
 
             modelBuilder.Entity("DiscordServerList_MVC.Models.DiscordUser", b =>

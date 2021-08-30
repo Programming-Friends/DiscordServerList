@@ -23,7 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DiscordServerList_MVC.Models
+namespace DiscordServerListLib.Models
 {
     public class DiscordServer
     {
