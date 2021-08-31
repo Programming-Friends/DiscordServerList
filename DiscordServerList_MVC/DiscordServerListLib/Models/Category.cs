@@ -21,6 +21,7 @@ SOFTWARE.
 
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DiscordServerListLib.Models
@@ -46,5 +47,7 @@ namespace DiscordServerListLib.Models
         [DataType(DataType.Date)]
         [Display(Name = "Updated Date")]
         public DateTime? Updated { get; set; }
+
+        public virtual ICollection<DiscordServer> DiscordServers { get; set; } = new HashSet<DiscordServer>();
     }
 }

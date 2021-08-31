@@ -20,17 +20,51 @@ SOFTWARE.
 */
 
 using DiscordServerListLib.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DiscordServerListLib.Data
 {
-    public interface ICategoryRepository
+    public class TagRepository : ITagRepository
     {
-        Task DeleteCategory(int id);
-        Task<List<Category>> GetCategorie();
-        Task<Category> GetCategoryById(int id);
-        Task InsertCategory(Category category);
-        Task UpdateCategory(Category category);
+        private readonly DiscordListDbContext _context;
+
+        public TagRepository(DiscordListDbContext context)
+        {
+            _context = context;
+        }
+
+        public Task<List<Tag>> GetTags()
+        {
+            return _context.Tags.ToListAsync();
+        }
+
+        public async Task<Tag> GetTagById(int id)
+        {
+            return await _context.Tags.FindAsync(id);
+        }
+
+        public async Task InsertTag(Tag tag)
+        {
+            await _context.Tags.AddAsync(tag);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteTag(int id)
+        {
+            Tag tag = await _context.Tags.FindAsync(id);
+            _context.Tags.Remove(tag);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateTag(Tag tag)
+        {
+            _context.Entry(tag).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
     }
 }

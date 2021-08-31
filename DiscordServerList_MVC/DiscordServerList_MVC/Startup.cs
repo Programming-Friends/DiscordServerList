@@ -77,6 +77,7 @@ namespace DiscordServerList_MVC
             services.AddScoped<IEmailSender, EmailSender>()
                     .AddScoped<IDiscordServerRepository, DiscordServerRepository>()
                     .AddScoped<ICategoryRepository, CategoryRepository>()
+                    .AddScoped<ITagRepository, TagRepository>()
                     .AddScoped<IImageService, ImageService>();
         }
 

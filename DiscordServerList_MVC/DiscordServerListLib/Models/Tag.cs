@@ -25,7 +25,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DiscordServerListLib.Models
 {
-    public class DiscordServer
+    public class Tag
     {
         public int Id { get; set; }
 
@@ -39,10 +39,6 @@ namespace DiscordServerListLib.Models
         [StringLength(75, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
         public string Description { get; set; }
 
-        [Required]
-        [StringLength(75, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
-        public string InviteLink { get; set; }
-
         [DataType(DataType.Date)]
         [Display(Name = "Created Date")]
         public DateTime Created { get; set; }
@@ -51,10 +47,6 @@ namespace DiscordServerListLib.Models
         [Display(Name = "Updated Date")]
         public DateTime? Updated { get; set; }
 
-        public byte[] ImageData { get; set; }
-        public string ContentType { get; set; }
-
-        public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();
-        public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
+        public virtual ICollection<DiscordServer> DiscordServers { get; set; } = new HashSet<DiscordServer>();
     }
 }
