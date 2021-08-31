@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 Copyright(c) 2021 Kyle Givler
 https://github.com/JoyfulReaper
@@ -19,23 +19,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using DiscordServerList_MVC.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace DiscordServerList_MVC
+namespace DiscordServerList_MVC.Data
 {
-    public class Program
+    public class IdentityDbContext : IdentityDbContext<DiscordUser>
     {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
+            : base(options) {}
     }
 }

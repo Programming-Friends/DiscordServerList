@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 Copyright(c) 2021 Kyle Givler
 https://github.com/JoyfulReaper
@@ -19,23 +19,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using DiscordServerListLib.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace DiscordServerList_MVC
+namespace DiscordServerListLib.Data
 {
-    public class Program
+    public interface IDiscordServerRepository
     {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        Task DeleteDiscordServer(int id);
+        Task<DiscordServer> GetDiscordServerById(int id);
+        Task<List<DiscordServer>> GetDiscordServers();
+        Task InsertDiscordServer(DiscordServer server);
+        Task UpdateDiscordServer(DiscordServer server);
     }
 }

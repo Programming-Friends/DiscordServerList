@@ -1,4 +1,4 @@
-/*
+﻿/*
 MIT License
 Copyright(c) 2021 Kyle Givler
 https://github.com/JoyfulReaper
@@ -19,23 +19,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 
-namespace DiscordServerList_MVC
+using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace DiscordServerListLib.Models
 {
-    public class Program
+    public class Category
     {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+        public int Id { get; set; }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        public string CreatorId { get; set; }
+
+        [Required]
+        [StringLength(75, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
+        public string Name { get; set; }
+
+        [Required]
+        [StringLength(75, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
+        public string Description { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Updated Date")]
+        public DateTime? Updated { get; set; }
     }
 }
