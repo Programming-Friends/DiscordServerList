@@ -74,7 +74,9 @@ namespace DiscordServerList_MVC
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
-            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IEmailSender, EmailSender>()
+                    .AddScoped<IDiscordServerRepository, DiscordServerRepository>()
+                    .AddScoped<ICategoryRepository, CategoryRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
