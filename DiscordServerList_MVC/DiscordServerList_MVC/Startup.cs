@@ -76,7 +76,8 @@ namespace DiscordServerList_MVC
 
             services.AddScoped<IEmailSender, EmailSender>()
                     .AddScoped<IDiscordServerRepository, DiscordServerRepository>()
-                    .AddScoped<ICategoryRepository, CategoryRepository>();
+                    .AddScoped<ICategoryRepository, CategoryRepository>()
+                    .AddScoped<IImageService, ImageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
