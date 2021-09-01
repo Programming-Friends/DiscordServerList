@@ -31,9 +31,9 @@ namespace DiscordServerListLib.Data
 {
     public class DiscordServerRepository : IDiscordServerRepository
     {
-        private readonly DiscordListDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DiscordServerRepository(DiscordListDbContext context)
+        public DiscordServerRepository(ApplicationDbContext context)
         {
             _context = context;
         }

@@ -31,9 +31,9 @@ namespace DiscordServerListLib.Data
 {
     public class TagRepository : ITagRepository
     {
-        private readonly DiscordListDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public TagRepository(DiscordListDbContext context)
+        public TagRepository(ApplicationDbContext context)
         {
             _context = context;
         }

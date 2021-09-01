@@ -1,4 +1,4 @@
-﻿@using DiscordServerList_MVC.Models
+﻿@using DiscordServerListLib.Models
 @inject SignInManager<DiscordUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();

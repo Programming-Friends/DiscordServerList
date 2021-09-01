@@ -19,19 +19,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using DiscordServerListLib.Data;
 using DiscordServerListLib.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DiscordServerListLib.Data
 {
-    public class DiscordListDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<DiscordUser>
     {
-        public DiscordListDbContext(DbContextOptions<DiscordListDbContext> options) : base (options) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options) {}
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<DiscordServer> DiscordServers { get; set; }

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using DiscordServerList_MVC.Models;
+using DiscordServerListLib.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
