@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using DiscordServerList_MVC.Models;
+using DiscordServerListLib.Models;
 
 namespace DiscordServerList_MVC.Areas.Identity.Pages.Account
 {

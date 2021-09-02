@@ -1,12 +1,22 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using DiscordServerListLib.Models
+ 
 @inject SignInManager<DiscordUser> SignInManager
 @inject UserManager<DiscordUser> UserManager
+
+@{ 
+    string userName = null;
+    if (SignInManager.IsSignedIn(User))
+    {
+        userName = (await UserManager.GetUserAsync(User))?.DisplayName ?? "Error";
+    }
+}
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @userName!</a>
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

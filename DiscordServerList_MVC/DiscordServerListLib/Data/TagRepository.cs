@@ -19,18 +19,52 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using DiscordServerList_MVC.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using DiscordServerListLib.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace DiscordServerList_MVC.Data
+namespace DiscordServerListLib.Data
 {
-    public class IdentityDbContext : IdentityDbContext<DiscordUser>
+    public class TagRepository : ITagRepository
     {
-        public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
-            : base(options) {}
+        private readonly ApplicationDbContext _context;
+
+        public TagRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public Task<List<Tag>> GetTags()
+        {
+            return _context.Tags.ToListAsync();
+        }
+
+        public async Task<Tag> GetTagById(int id)
+        {
+            return await _context.Tags.FindAsync(id);
+        }
+
+        public async Task InsertTag(Tag tag)
+        {
+            await _context.Tags.AddAsync(tag);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteTag(int id)
+        {
+            Tag tag = await _context.Tags.FindAsync(id);
+            _context.Tags.Remove(tag);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateTag(Tag tag)
+        {
+            _context.Entry(tag).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
     }
 }

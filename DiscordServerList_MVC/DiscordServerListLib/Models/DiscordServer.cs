@@ -41,6 +41,7 @@ namespace DiscordServerListLib.Models
 
         [Required]
         [StringLength(75, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
+        [Display(Name = "Invite Link")]
         public string InviteLink { get; set; }
 
         [DataType(DataType.Date)]
@@ -54,6 +55,9 @@ namespace DiscordServerListLib.Models
         public byte[] ImageData { get; set; }
         public string ContentType { get; set; }
 
+        [Display(Name = "Creator")]
+        public virtual DiscordUser Creator { get; set; }
         public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();
+        public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
     }
 }

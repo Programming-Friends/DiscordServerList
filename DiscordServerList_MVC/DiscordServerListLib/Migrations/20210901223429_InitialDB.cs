@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace DiscordServerList_MVC.Data.Migrations
+namespace DiscordServerListLib.Migrations
 {
     public partial class InitialDB : Migration
     {
@@ -51,6 +51,40 @@ namespace DiscordServerList_MVC.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tags",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -160,54 +194,77 @@ namespace DiscordServerList_MVC.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DiscordServer",
+                name: "DiscordServers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
                     InviteLink = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    ContentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DiscordUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ContentType = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DiscordServer", x => x.Id);
+                    table.PrimaryKey("PK_DiscordServers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DiscordServer_AspNetUsers_DiscordUserId",
-                        column: x => x.DiscordUserId,
+                        name: "FK_DiscordServers_AspNetUsers_CreatorId",
+                        column: x => x.CreatorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Category",
+                name: "CategoryDiscordServer",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DiscordServerId = table.Column<int>(type: "int", nullable: true)
+                    CategoriesId = table.Column<int>(type: "int", nullable: false),
+                    DiscordServersId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Category", x => x.Id);
+                    table.PrimaryKey("PK_CategoryDiscordServer", x => new { x.CategoriesId, x.DiscordServersId });
                     table.ForeignKey(
-                        name: "FK_Category_DiscordServer_DiscordServerId",
-                        column: x => x.DiscordServerId,
-                        principalTable: "DiscordServer",
+                        name: "FK_CategoryDiscordServer_Categories_CategoriesId",
+                        column: x => x.CategoriesId,
+                        principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CategoryDiscordServer_DiscordServers_DiscordServersId",
+                        column: x => x.DiscordServersId,
+                        principalTable: "DiscordServers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DiscordServerTag",
+                columns: table => new
+                {
+                    DiscordServersId = table.Column<int>(type: "int", nullable: false),
+                    TagsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DiscordServerTag", x => new { x.DiscordServersId, x.TagsId });
+                    table.ForeignKey(
+                        name: "FK_DiscordServerTag_DiscordServers_DiscordServersId",
+                        column: x => x.DiscordServersId,
+                        principalTable: "DiscordServers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DiscordServerTag_Tags_TagsId",
+                        column: x => x.TagsId,
+                        principalTable: "Tags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -250,14 +307,19 @@ namespace DiscordServerList_MVC.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Category_DiscordServerId",
-                table: "Category",
-                column: "DiscordServerId");
+                name: "IX_CategoryDiscordServer_DiscordServersId",
+                table: "CategoryDiscordServer",
+                column: "DiscordServersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DiscordServer_DiscordUserId",
-                table: "DiscordServer",
-                column: "DiscordUserId");
+                name: "IX_DiscordServers_CreatorId",
+                table: "DiscordServers",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DiscordServerTag_TagsId",
+                table: "DiscordServerTag",
+                column: "TagsId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -278,13 +340,22 @@ namespace DiscordServerList_MVC.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                name: "CategoryDiscordServer");
+
+            migrationBuilder.DropTable(
+                name: "DiscordServerTag");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "DiscordServer");
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "DiscordServers");
+
+            migrationBuilder.DropTable(
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

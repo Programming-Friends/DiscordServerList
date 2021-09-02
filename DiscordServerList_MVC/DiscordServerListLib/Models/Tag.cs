@@ -19,18 +19,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using DiscordServerListLib.Models;
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
-namespace DiscordServerListLib.Data
+namespace DiscordServerListLib.Models
 {
-    public interface ICategoryRepository
+    public class Tag
     {
-        Task DeleteCategory(int id);
-        Task<List<Category>> GetCategorie();
-        Task<Category> GetCategoryById(int id);
-        Task InsertCategory(Category category);
-        Task UpdateCategory(Category category);
+        public int Id { get; set; }
+
+        public string CreatorId { get; set; }
+
+        [Required]
+        [StringLength(75, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
+        public string Name { get; set; }
+
+        [Required]
+        [StringLength(75, ErrorMessage = "The {0} must be at least {2} and at most {1} characters.", MinimumLength = 2)]
+        public string Description { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Created Date")]
+        public DateTime Created { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Updated Date")]
+        public DateTime? Updated { get; set; }
+
+        public virtual ICollection<DiscordServer> DiscordServers { get; set; } = new HashSet<DiscordServer>();
     }
 }

@@ -31,21 +31,25 @@ namespace DiscordServerListLib.Data
 {
     public class DiscordServerRepository : IDiscordServerRepository
     {
-        private readonly DiscordListDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public DiscordServerRepository(DiscordListDbContext context)
+        public DiscordServerRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
         public Task<List<DiscordServer>> GetDiscordServers()
         {
-            return _context.DiscordServers.ToListAsync();
+            return _context.DiscordServers
+                .Include(d => d.Creator)
+                .ToListAsync();
         }
 
         public async Task<DiscordServer> GetDiscordServerById(int id)
         {
-            return await _context.DiscordServers.FindAsync(id);
+            return await _context.DiscordServers
+                .Include(d => d.Creator)
+                .SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task InsertDiscordServer(DiscordServer server)

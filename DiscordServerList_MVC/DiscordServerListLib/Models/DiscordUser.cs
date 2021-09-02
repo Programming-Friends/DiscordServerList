@@ -24,7 +24,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DiscordServerList_MVC.Models
+namespace DiscordServerListLib.Models
 {
     public class DiscordUser : IdentityUser
     {

@@ -25,12 +25,12 @@ using System.Threading.Tasks;
 
 namespace DiscordServerListLib.Data
 {
-    public interface ICategoryRepository
+    public interface ITagRepository
     {
-        Task DeleteCategory(int id);
-        Task<List<Category>> GetCategorie();
-        Task<Category> GetCategoryById(int id);
-        Task InsertCategory(Category category);
-        Task UpdateCategory(Category category);
+        Task DeleteTag(int id);
+        Task<Tag> GetTagById(int id);
+        Task<List<Tag>> GetTags();
+        Task InsertTag(Tag tag);
+        Task UpdateTag(Tag tag);
     }
 }

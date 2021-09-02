@@ -19,18 +19,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+using DiscordServerListLib.Data;
 using DiscordServerListLib.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Text;
 
 namespace DiscordServerListLib.Data
 {
-    public interface ICategoryRepository
+    public class ApplicationDbContext : IdentityDbContext<DiscordUser>
     {
-        Task DeleteCategory(int id);
-        Task<List<Category>> GetCategorie();
-        Task<Category> GetCategoryById(int id);
-        Task InsertCategory(Category category);
-        Task UpdateCategory(Category category);
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options) {}
+
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<DiscordServer> DiscordServers { get; set; }
+        public DbSet<Tag> Tags { get; set; }
     }
 }
