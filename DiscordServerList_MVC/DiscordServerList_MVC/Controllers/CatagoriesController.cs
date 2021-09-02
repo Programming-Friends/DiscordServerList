@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DiscordServerListLib.Data;
+using DiscordServerListLib.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,10 +13,22 @@ namespace DiscordServerList_MVC.Controllers
 {
     public class CatagoriesController : Controller
     {
-        // GET: CatagoriesController
-        public ActionResult Index()
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly UserManager<DiscordUser> _userManager;
+
+        public CatagoriesController(ICategoryRepository categoryRepository,
+            UserManager<DiscordUser> userManager)
         {
-            return View();
+            _categoryRepository = categoryRepository;
+            _userManager = userManager;
+        }
+
+        // GET: CatagoriesController
+        public async Task<IActionResult> Index()
+        {
+            var categories = await _categoryRepository.GetCategories();
+
+            return View(categories);
         }
 
         // GET: CatagoriesController/Details/5
@@ -32,16 +47,19 @@ namespace DiscordServerList_MVC.Controllers
         // POST: CatagoriesController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create([Bind("Name,Description")] Category category)
         {
-            try
+            if (ModelState.IsValid)
             {
+                category.Created = DateTime.Now;
+                category.CreatorId = _userManager.GetUserId(User);
+
+                await _categoryRepository.InsertCategory(category);
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(category);
         }
 
         // GET: CatagoriesController/Edit/5

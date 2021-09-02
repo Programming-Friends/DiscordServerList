@@ -38,14 +38,18 @@ namespace DiscordServerListLib.Data
             _context = context;
         }
 
-        public Task<List<Category>> GetCategorie()
+        public Task<List<Category>> GetCategories()
         {
-            return _context.Categories.ToListAsync();
+            return _context.Categories
+                .Include(c => c.Creator)
+                .ToListAsync();
         }
 
         public async Task<Category> GetCategoryById(int id)
         {
-            return await _context.Categories.FindAsync(id);
+            return await _context.Categories
+                .Include(c => c.Creator)
+                .SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task InsertCategory(Category category)

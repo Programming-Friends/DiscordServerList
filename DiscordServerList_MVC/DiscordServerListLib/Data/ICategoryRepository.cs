@@ -28,7 +28,7 @@ namespace DiscordServerListLib.Data
     public interface ICategoryRepository
     {
         Task DeleteCategory(int id);
-        Task<List<Category>> GetCategorie();
+        Task<List<Category>> GetCategories();
         Task<Category> GetCategoryById(int id);
         Task InsertCategory(Category category);
         Task UpdateCategory(Category category);

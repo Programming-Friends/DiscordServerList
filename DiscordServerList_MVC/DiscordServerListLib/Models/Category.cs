@@ -30,6 +30,7 @@ namespace DiscordServerListLib.Models
     {
         public int Id { get; set; }
 
+        [Display(Name = "Creator")]
         public string CreatorId { get; set; }
 
         [Required]
@@ -47,6 +48,8 @@ namespace DiscordServerListLib.Models
         [DataType(DataType.Date)]
         [Display(Name = "Updated Date")]
         public DateTime? Updated { get; set; }
+
+        public virtual DiscordUser Creator { get; set; }
 
         public virtual ICollection<DiscordServer> DiscordServers { get; set; } = new HashSet<DiscordServer>();
     }

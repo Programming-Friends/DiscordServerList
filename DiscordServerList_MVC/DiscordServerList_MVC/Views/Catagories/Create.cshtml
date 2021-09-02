@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using DiscordServerListLib.Models
+
+@model DiscordServer
+
+@inject SignInManager<DiscordUser> SignInManager
+@inject UserManager<DiscordUser> UserManager
+
+
+@{
+    ViewData["Title"] = "Create";
+
+    string userName = null;
+    if (SignInManager.IsSignedIn(User))
+    {
+        userName = (await UserManager.GetUserAsync(User)).DisplayName;
+    }
+}
+
+<h1>Create</h1>
+
+<h4>Category</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-1">
+                <label asp-for="CreatorId" class="control-label"></label>
+                <input asp-for="CreatorId" class="form-control" disabled value="@userName" />
+                <span asp-validation-for="CreatorId" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
