@@ -70,11 +70,13 @@ namespace DiscordServerList_MVC
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
-            services.AddScoped<IEmailSender, EmailSender>()
-                    .AddScoped<IDiscordServerRepository, DiscordServerRepository>()
-                    .AddScoped<ICategoryRepository, CategoryRepository>()
-                    .AddScoped<ITagRepository, TagRepository>()
-                    .AddScoped<IImageService, ImageService>();
+            services
+                .AddScoped<ISeedDatabase, EFSeedDatabase>()
+                .AddScoped<IEmailSender, EmailSender>()
+                .AddScoped<IDiscordServerRepository, DiscordServerRepository>()
+                .AddScoped<ICategoryRepository, CategoryRepository>()
+                .AddScoped<ITagRepository, TagRepository>()
+                .AddScoped<IImageService, ImageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

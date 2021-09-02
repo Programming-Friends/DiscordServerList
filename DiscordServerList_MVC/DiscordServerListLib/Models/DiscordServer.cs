@@ -29,6 +29,7 @@ namespace DiscordServerListLib.Models
     {
         public int Id { get; set; }
 
+        [Display(Name = "Creator")]
         public string CreatorId { get; set; }
 
         [Required]
