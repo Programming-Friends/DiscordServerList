@@ -95,6 +95,12 @@ namespace DiscordServerList_MVC.Controllers
         {
             var discordServer = await _discordServerRepository.GetDiscordServerById(id);
 
+            if (discordServer.CreatorId != _userManager.GetUserId(User))
+            {
+                Response.StatusCode = 401;
+                return RedirectToAction("NotAuthorized", "Home", new { message = "You can't edit a server you didn't create!"});
+            }
+
             if (discordServer == null)
             {
                 Response.StatusCode = 404;

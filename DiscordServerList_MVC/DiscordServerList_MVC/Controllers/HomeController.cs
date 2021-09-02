@@ -33,6 +33,11 @@ namespace DiscordServerList_MVC.Controllers
             return View();
         }
 
+        public IActionResult NotAuthorized(string message)
+        {
+            return View("NotAuthorized", message);
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -1,0 +1,11 @@
+﻿@model string
+
+@{
+    ViewData["Title"] = "Not Authorized";
+}
+
+<div class="text-center">
+    <h1 class="display-6">Oh no! It looks like you don't have permission to do that! :(</h1>
+    <p>@Model</p>
+    <p><a asp-area="" asp-controller="Home" asp-action="Index">Go Home</a></p>
+</div>
