@@ -1,0 +1,61 @@
+﻿@model DiscordServerListLib.Models.DiscordServer
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>DiscordServer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-1">
+                <label asp-for="CreatorId" class="form-label"></label>
+                <input asp-for="CreatorId" class="form-control" value="@Model.Creator.DisplayName" disabled/>
+                <span asp-validation-for="CreatorId" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="InviteLink" class="form-label"></label>
+                <input asp-for="InviteLink" class="form-control" />
+                <span asp-validation-for="InviteLink" class="text-danger"></span>
+            </div>
+            <div class="mb-1">
+                <label asp-for="Created" class="form-label"></label>
+                <input asp-for="Created" class="form-control" disabled />
+                <span asp-validation-for="Created" class="text-danger"></span>
+            </div>
+            @if (Model.Updated != null)
+            {
+                <div class="mb-1">
+                    <label asp-for="Updated" class="form-label"></label>
+                    <input asp-for="Updated" class="form-control" disabled />
+                    <span asp-validation-for="Updated" class="text-danger"></span>
+                </div>
+            }
+            <div class="mt-2">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

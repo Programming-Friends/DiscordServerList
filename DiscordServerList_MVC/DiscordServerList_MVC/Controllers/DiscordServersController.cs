@@ -52,9 +52,16 @@ namespace DiscordServerList_MVC.Controllers
         }
 
         // GET: DiscordServersController/Details/5
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            var discordServer = await _discordServerRepository.GetDiscordServerById(id);
+            if (discordServer == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("PageNotFound", "Home");
+            }
+
+            return View(discordServer);
         }
 
         // GET: DiscordServersController/Create
@@ -83,45 +90,73 @@ namespace DiscordServerList_MVC.Controllers
         }
 
         // GET: DiscordServersController/Edit/5
-        public ActionResult Edit(int id)
+        [Authorize]
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            var discordServer = await _discordServerRepository.GetDiscordServerById(id);
+
+            if (discordServer == null)
+            {
+                Response.StatusCode = 404;
+                return RedirectToAction("PageNotFound", "Home");
+            }
+
+            return View(discordServer);
         }
 
         // POST: DiscordServersController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Description,InviteLink")] DiscordServer discordServer)
         {
-            try
+            var discordServerDb = await _discordServerRepository.GetDiscordServerById(id);
+
+            if(discordServerDb == null)
             {
-                return RedirectToAction(nameof(Index));
+                RedirectToAction("PageNotFound", "Home");
             }
-            catch
+
+            if (ModelState.IsValid)
             {
-                return View();
+                discordServerDb.Updated = DateTime.Now;
+                discordServerDb.Name = discordServer.Name;
+                discordServerDb.Description = discordServer.Description;
+                discordServerDb.InviteLink = discordServer.InviteLink;
+
+                await _discordServerRepository.UpdateDiscordServer(discordServerDb);
+                return RedirectToAction("Index");
             }
+
+            return View(discordServer);
         }
 
         // GET: DiscordServersController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            var discordServer = await _discordServerRepository.GetDiscordServerById(id);
+            if(discordServer == null)
+            {
+                Response.StatusCode = 404;
+                RedirectToAction("PageNotFound", "Home");
+            }
+
+            return View(discordServer);
         }
 
         // POST: DiscordServersController/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
+            var discordServer = await _discordServerRepository.GetDiscordServerById(id);
+            if (discordServer == null)
             {
-                return RedirectToAction(nameof(Index));
+                Response.StatusCode = 404;
+                RedirectToAction("PageNotFound", "Home");
             }
-            catch
-            {
-                return View();
-            }
+
+            await _discordServerRepository.DeleteDiscordServer(discordServer.Id);
+            return RedirectToAction("Index");
         }
     }
 }
